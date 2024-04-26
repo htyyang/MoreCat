@@ -1,7 +1,18 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
+
+
+val keyProperties: Properties by lazy {
+    Properties().apply {
+        val propertiesFile = rootProject.file("key.properties")
+        propertiesFile.inputStream().use { load(it) }
+    }
+}
+
 
 android {
     namespace = "com.hyang57.morecat"
@@ -15,6 +26,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "api_key", "${keyProperties["api_key"]}")
+
+
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -38,6 +53,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"

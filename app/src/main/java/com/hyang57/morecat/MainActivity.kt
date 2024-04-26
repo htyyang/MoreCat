@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.hyang57.morecat.facts.FactsRepository
 import com.hyang57.morecat.ui.theme.MoreCatTheme
 
 class MainActivity : ComponentActivity() {
@@ -40,6 +41,17 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
+    val repository = FactsRepository()
+
+    repository.fetchData(
+        onFailure = { println("Failed to fetch data") },
+        onSuccess = { response ->
+            println("Fetched data successfully")
+            response.data.forEach { fact ->
+                println(fact)
+            }
+        }
+    )
     MoreCatTheme {
         Greeting("Android")
     }
