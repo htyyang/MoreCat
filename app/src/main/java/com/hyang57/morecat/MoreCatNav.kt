@@ -1,5 +1,6 @@
 package com.hyang57.morecat
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,6 +33,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hyang57.morecat.MoreCatApp.Companion.factsSample
 import com.hyang57.morecat.facts.FactsRepository
 import com.hyang57.morecat.images.ImagesRepository
 import com.hyang57.morecat.ui.screens.FactsScreen
@@ -145,7 +147,9 @@ fun MoreCatNav(
                         modifier = Modifier.fillMaxSize(),
                         factsUiState = factsUiState,
                     )
+                    Log.i("factsUiState","$factsUiState")
                 }
+
                 Route.INFO -> {
                     InfoScreen(
                         modifier = Modifier.fillMaxSize()

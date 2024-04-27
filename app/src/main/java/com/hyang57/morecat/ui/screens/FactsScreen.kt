@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.layout.ContentScale
@@ -46,12 +47,12 @@ fun FactsScreen( modifier: Modifier = Modifier,
             LazyColumn(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
             ) {
-                items(
+                itemsIndexed(
                     items = factsUiState.facts,
-                    itemContent = { fact ->
+                    itemContent = { index, fact ->
                         FactItem(
                             fact = fact,
-                            image = factsUiState.images[0]
+                            image = factsUiState.images[index]
                         )
                     }
                 )
@@ -71,7 +72,7 @@ fun FactItem(
             .padding(vertical = 8.dp),
     ) {
         val imgModifier = Modifier
-            .size(90.dp)
+            .size(120.dp)
         Row {
             AsyncImage(
                 model = image,
@@ -85,7 +86,7 @@ fun FactItem(
                     style = MaterialTheme.typography.titleMedium
                 )
             }
-            Spacer(Modifier.width(16.dp))
+            Spacer(Modifier.width(30.dp))
         }
     }
 }

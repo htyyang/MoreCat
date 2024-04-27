@@ -1,9 +1,10 @@
 package com.hyang57.morecat.ui.screens
 
+
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.hyang57.morecat.MoreCatApp
-import com.hyang57.morecat.MoreCatApp.Companion.factsSample
-import com.hyang57.morecat.MoreCatApp.Companion.imagesSample
+
 import com.hyang57.morecat.facts.FactsRepository
 import com.hyang57.morecat.facts.FactsResponse
 import com.hyang57.morecat.images.ImagesRepository
@@ -22,6 +23,7 @@ class FactsViewModel(private val factsRepo: FactsRepository,
             facts = factsResponse.data,
             images = imagesList,
         )
+        Log.i("_uiState","$_uiState")
     }
 
     fun fetchData(fromFile: Boolean) {
@@ -30,25 +32,29 @@ class FactsViewModel(private val factsRepo: FactsRepository,
             val imagesSample = MoreCatApp.imagesSample
             updateState(factsSample, imagesSample)
         } else {
-            var facts = FactsResponse(data = listOf())
-            var images: List<String> = listOf()
+            var facts = FactsResponse(data = listOf("test"))
+            var images: List<String> = listOf("https://cdn.shibe.online/cats/f2f84ec007bea508baec72bbb70a47c335522c9a.jpg")
             factsRepo.fetchData(onFailure = {
                 // Todo: add error handling
+                Log.i("facts api fail","facts api fail")
             }) { factsResponse ->
                 facts = factsResponse
+                Log.i("facts api success","$facts")
             }
             imagesRepo.fetchData(onFailure = {
                 // Todo: add error handling
+                Log.i("images api fail","images api fail")
             }) { imagesList ->
                 images = imagesList
+                updateState(facts, images)
+                Log.i("images api success","$images")
             }
-            updateState(facts, images)
         }
     }
 
 }
 
 data class FactsUiState(
-    val facts: List<String> = listOf(),
-    val images: List<String> = listOf(),
+    val facts: List<String> = emptyList(),
+    val images: List<String> = emptyList(),
 )

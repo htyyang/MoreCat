@@ -3,28 +3,56 @@ package com.hyang57.morecat
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.hyang57.morecat.facts.FactsRepository
 import com.hyang57.morecat.images.ImagesRepository
+import com.hyang57.morecat.ui.screens.FactsViewModel
 import com.hyang57.morecat.ui.theme.MoreCatTheme
 
+class FactsViewModelFactory(private val factsRepository: FactsRepository, private val imagesRepository: ImagesRepository ) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return FactsViewModel(factsRepo = factsRepository, imagesRepo = imagesRepository) as T
+    }
+}
 class MainActivity : ComponentActivity() {
+
+    private val factsRepository = FactsRepository()
+    private val imagesRepository = ImagesRepository()
+
+    private val viewModelFactory = FactsViewModelFactory(factsRepository, imagesRepository)
+    private val factsViewModel: FactsViewModel by viewModels { viewModelFactory }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
+
+            val readFromFile = remember { mutableStateOf(false) }
+            factsViewModel.fetchData(fromFile = readFromFile.value)
+
             MoreCatTheme {
-                // A surface container using the 'background' color from the theme
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    MoreCatNav(
+                        factsViewModel = factsViewModel,
+                        readLocal = readFromFile,
+                    ) {
+                        factsViewModel.fetchData(readFromFile.value)
+                    }
                 }
             }
         }
