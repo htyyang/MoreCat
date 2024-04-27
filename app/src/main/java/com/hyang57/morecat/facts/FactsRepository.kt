@@ -19,10 +19,10 @@ class FactsRepository {
         }
     }
 
-    fun fetchData(onFailure: () -> Unit, onSuccess: (FactsResponse) -> Unit) {
+    fun fetchData(count:Int, onFailure: () -> Unit, onSuccess: (FactsResponse) -> Unit) {
 
         val request: Call<FactsResponse> = factsApi.fetchCatFacts(
-            30,
+            count = count,
         )
 
         request.enqueue(object : Callback<FactsResponse> {

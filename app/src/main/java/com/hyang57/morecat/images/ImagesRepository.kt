@@ -20,10 +20,10 @@ class ImagesRepository {
         }
     }
 
-    fun fetchData(onFailure: () -> Unit, onSuccess: (List<String>) -> Unit) {
+    fun fetchData(count: Int, onFailure: () -> Unit, onSuccess: (List<String>) -> Unit) {
 
         val request = imagesApi.fetchCatImages(
-            30,
+            count = count,
         )
 
         request.enqueue(object : Callback<List<String>> {

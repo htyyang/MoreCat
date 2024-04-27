@@ -17,6 +17,11 @@ class MoreCatApp : Application() {
         var imagesSample: List<String> = listOf("https://cdn.shibe.online/cats/f2f84ec007bea508baec72bbb70a47c335522c9a.jpg")
         //lateinit var factsSample: FactsResponse
         //lateinit var imagesSample: List<String>
+        const val MEME_TEXT = "hello"
+        const val MEME_API_PART_1 = "https://cataas.com/cat/says/"
+        const val MEME_API_PART_2 = "?fontSize=70&fontColor="
+        const val DEFAULT_MEME_COLOR = "red"
+        const val DEFAULT_COUNT = 30
     }
 
     override fun onCreate() {

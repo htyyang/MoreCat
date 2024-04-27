@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
@@ -39,12 +40,14 @@ import com.hyang57.morecat.images.ImagesRepository
 import com.hyang57.morecat.ui.ReadLocalDialog
 import com.hyang57.morecat.ui.screens.FactsScreen
 import com.hyang57.morecat.ui.screens.FactsViewModel
-import com.hyang57.morecat.ui.screens.InfoScreen
+import com.hyang57.morecat.ui.screens.MemeScreen
+import com.hyang57.morecat.ui.screens.MemeViewModel
+import com.hyang57.morecat.ui.screens.SettingsScreen
 
 object Route {
     const val FACTS = "Facts"
     const val MEME = "Meme"
-    const val INFO = "Info"
+    const val SETTINGS = "Settings"
 }
 
 data class Destination(
@@ -68,10 +71,10 @@ val DESTINATIONS = listOf(
         textId = R.string.title_meme
     ),
     Destination(
-        route = Route.INFO,
-        selectedIcon = Icons.Default.Info,
-        unselectedIcon = Icons.Default.Info,
-        textId = R.string.title_info
+        route = Route.SETTINGS,
+        selectedIcon = Icons.Default.Settings,
+        unselectedIcon = Icons.Default.Settings,
+        textId = R.string.title_settings
     )
 )
 
@@ -79,12 +82,15 @@ val DESTINATIONS = listOf(
 @Composable
 fun MoreCatNav(
     factsViewModel: FactsViewModel,
+    memeViewModel: MemeViewModel,
     readLocal: MutableState<Boolean>,
     refresh: () -> Unit,
 ) {
     val destination = remember { mutableStateOf(Route.FACTS) }
     var showReadLocalDialog by remember { mutableStateOf(false) }
+
     val factsUiState by factsViewModel.uiState.collectAsState()
+    val memeUiState by memeViewModel.uiState.collectAsState()
 
     if (showReadLocalDialog) {
         ReadLocalDialog(
@@ -108,7 +114,7 @@ fun MoreCatNav(
                         text = when (destination.value) {
                             Route.FACTS -> stringResource(id = R.string.title_facts)
                             Route.MEME -> stringResource(id = R.string.title_meme)
-                            Route.INFO -> stringResource(id = R.string.title_info)
+                            Route.SETTINGS -> stringResource(id = R.string.title_settings)
                             else -> ""
                         })
                 },
@@ -118,7 +124,7 @@ fun MoreCatNav(
                         showReadLocalDialog = true
                     }) {
                         Icon(
-                            imageVector = Icons.Filled.Settings,
+                            imageVector = Icons.Filled.Build,
                             contentDescription = stringResource(id = R.string.title_settings)
                         )
                     }
@@ -161,9 +167,23 @@ fun MoreCatNav(
                     Log.i("factsUiState","$factsUiState")
                 }
 
-                Route.INFO -> {
-                    InfoScreen(
-                        modifier = Modifier.fillMaxSize()
+                Route.MEME -> {
+                    MemeScreen(
+                        modifier = Modifier.fillMaxSize(),
+                        memeUiState = memeUiState,
+                        onText = {
+                            memeViewModel.fetchMeme(it)
+                        },
+                    )
+                }
+
+                Route.SETTINGS -> {
+                    SettingsScreen(
+                        modifier = Modifier.fillMaxSize(),
+                        factsUiState = factsUiState,
+                        memeUiState = memeUiState,
+                        changeMemeColor = {memeViewModel.updateColor(it)},
+                        updateCount = {factsViewModel.updateCount(it)}
                     )
                 }
             }
@@ -175,12 +195,13 @@ fun MoreCatNav(
 @Composable
 fun MoreCatPreview() {
     MaterialTheme {
-        val readFromFile = remember { mutableStateOf(false) }  // Mock state for the preview
+        val readLocal = remember { mutableStateOf(false) }  // Mock state for the preview
 
         MoreCatNav(
-            readLocal = readFromFile,
+            readLocal = readLocal,
             factsViewModel = FactsViewModel(FactsRepository(), ImagesRepository()),
-            refresh = {}
+            memeViewModel = MemeViewModel(),
+            refresh = {},
         )
     }
 }

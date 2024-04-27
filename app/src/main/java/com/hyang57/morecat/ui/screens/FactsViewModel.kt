@@ -26,15 +26,21 @@ class FactsViewModel(private val factsRepo: FactsRepository,
         Log.i("_uiState","$_uiState")
     }
 
-    fun fetchData(fromFile: Boolean) {
-        if (fromFile) {
+    fun updateCount(count: Int){
+        _uiState.value = _uiState.value.copy(
+            count = count
+        )
+    }
+
+    fun fetchData(fromLocal: Boolean) {
+        if (fromLocal) {
             val factsSample = MoreCatApp.factsSample
             val imagesSample = MoreCatApp.imagesSample
             updateState(factsSample, imagesSample)
         } else {
             var facts = FactsResponse(data = listOf("test"))
             var images: List<String> = listOf("https://cdn.shibe.online/cats/f2f84ec007bea508baec72bbb70a47c335522c9a.jpg")
-            factsRepo.fetchData(onFailure = {
+            factsRepo.fetchData(count = _uiState.value.count, onFailure = {
                 facts = MoreCatApp.factsSample
                 updateState(facts, images)
                 Log.w("Fetched facts failure","Fetched facts failure")
@@ -42,7 +48,7 @@ class FactsViewModel(private val factsRepo: FactsRepository,
                 facts = factsResponse
                 Log.i("Fetched facts success","$facts")
             }
-            imagesRepo.fetchData(onFailure = {
+            imagesRepo.fetchData(count = _uiState.value.count, onFailure = {
                 images = MoreCatApp.imagesSample
                 updateState(facts, images)
                 Log.w("Fetched images failure","Fetched images failure")
@@ -59,4 +65,5 @@ class FactsViewModel(private val factsRepo: FactsRepository,
 data class FactsUiState(
     val facts: List<String> = emptyList(),
     val images: List<String> = emptyList(),
+    val count: Int = MoreCatApp.DEFAULT_COUNT,
 )

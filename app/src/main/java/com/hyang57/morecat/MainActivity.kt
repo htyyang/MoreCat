@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.hyang57.morecat.facts.FactsRepository
 import com.hyang57.morecat.images.ImagesRepository
 import com.hyang57.morecat.ui.screens.FactsViewModel
+import com.hyang57.morecat.ui.screens.MemeViewModel
 import com.hyang57.morecat.ui.theme.MoreCatTheme
 
 class FactsViewModelFactory(private val factsRepository: FactsRepository, private val imagesRepository: ImagesRepository ) : ViewModelProvider.Factory {
@@ -33,13 +34,15 @@ class MainActivity : ComponentActivity() {
     private val viewModelFactory = FactsViewModelFactory(factsRepository, imagesRepository)
     private val factsViewModel: FactsViewModel by viewModels { viewModelFactory }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
 
-            val readLocal = remember { mutableStateOf(true) }
-            factsViewModel.fetchData(fromFile = readLocal.value)
+            val readLocal = remember { mutableStateOf(false) }
+            val isDarkMode = remember { mutableStateOf(false) }
+            factsViewModel.fetchData(fromLocal = readLocal.value)
 
             MoreCatTheme {
 
@@ -49,6 +52,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     MoreCatNav(
                         factsViewModel = factsViewModel,
+                        memeViewModel = MemeViewModel(),
                         readLocal = readLocal,
                     ) {
                         factsViewModel.fetchData(readLocal.value)
@@ -73,6 +77,7 @@ fun GreetingPreview() {
     val repository = FactsRepository()
 
     repository.fetchData(
+        count = 30,
         onFailure = { println("Failed to fetch data") },
         onSuccess = { response ->
             println("Fetched data successfully")
@@ -84,6 +89,7 @@ fun GreetingPreview() {
     val repository2 = ImagesRepository()
 
     repository2.fetchData(
+        count = 30,
         onFailure = { println("Failed to fetch images") },
         onSuccess = { urls ->
             println("Fetched images successfully")

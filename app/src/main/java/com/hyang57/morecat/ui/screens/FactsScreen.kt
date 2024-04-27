@@ -32,6 +32,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.FloatingActionButton
@@ -40,15 +42,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.hyang57.morecat.MoreCatApp
 import com.hyang57.morecat.R
 import com.hyang57.morecat.ui.theme.MoreCatTheme
 
 
 @Composable
 fun FactsScreen( modifier: Modifier = Modifier,
-                factsUiState: FactsUiState,
+                 factsUiState: FactsUiState,
                  refresh: () -> Unit,
                 ) {
     Box(
@@ -92,13 +97,14 @@ fun FactItem(
         modifier = Modifier
             .padding(vertical = 8.dp),
     ) {
-        val imgModifier = Modifier
-            .size(120.dp)
         Row {
             AsyncImage(
-                model = image,
-                contentDescription = null,
-                modifier = imgModifier
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(image)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = "cat image",
+                modifier = Modifier.size(120.dp),
             )
             Spacer(Modifier.width(16.dp))
             Column {

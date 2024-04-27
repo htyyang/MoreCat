@@ -1,5 +1,7 @@
 package com.hyang57.morecat.ui
 
+
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.core.app.ActivityCompat.recreate
 import com.hyang57.morecat.R
 import com.hyang57.morecat.ui.theme.MoreCatTheme
 

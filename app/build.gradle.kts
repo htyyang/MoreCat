@@ -97,4 +97,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     implementation("io.coil-kt:coil-compose:2.6.0")
+
+    val appcompat_version = "1.6.1"
+
+    implementation("androidx.appcompat:appcompat:$appcompat_version")
 }

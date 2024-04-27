@@ -2,9 +2,9 @@
     <string name="app_name">MoreCat</string>
     <string name="title_facts">Facts</string>
     <string name="title_meme">Meme</string>
-    <string name="title_info">Info</string>
     <string name="title_settings">Settings</string>
     <string name="read_local">Load data locally</string>
     <string name="refresh">Refresh</string>
     <string name="done">Done</string>
+    <string name="meme">Meme</string>
 </resources>
