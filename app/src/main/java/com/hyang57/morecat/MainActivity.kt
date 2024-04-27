@@ -38,8 +38,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
 
-            val readFromFile = remember { mutableStateOf(false) }
-            factsViewModel.fetchData(fromFile = readFromFile.value)
+            val readLocal = remember { mutableStateOf(true) }
+            factsViewModel.fetchData(fromFile = readLocal.value)
 
             MoreCatTheme {
 
@@ -49,9 +49,9 @@ class MainActivity : ComponentActivity() {
                 ) {
                     MoreCatNav(
                         factsViewModel = factsViewModel,
-                        readLocal = readFromFile,
+                        readLocal = readLocal,
                     ) {
-                        factsViewModel.fetchData(readFromFile.value)
+                        factsViewModel.fetchData(readLocal.value)
                     }
                 }
             }

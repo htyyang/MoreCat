@@ -36,6 +36,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hyang57.morecat.MoreCatApp.Companion.factsSample
 import com.hyang57.morecat.facts.FactsRepository
 import com.hyang57.morecat.images.ImagesRepository
+import com.hyang57.morecat.ui.ReadLocalDialog
 import com.hyang57.morecat.ui.screens.FactsScreen
 import com.hyang57.morecat.ui.screens.FactsViewModel
 import com.hyang57.morecat.ui.screens.InfoScreen
@@ -82,8 +83,17 @@ fun MoreCatNav(
     refresh: () -> Unit,
 ) {
     val destination = remember { mutableStateOf(Route.FACTS) }
-    var showSettingsDialog by remember { mutableStateOf(false) }
+    var showReadLocalDialog by remember { mutableStateOf(false) }
     val factsUiState by factsViewModel.uiState.collectAsState()
+
+    if (showReadLocalDialog) {
+        ReadLocalDialog(
+            readLocal = readLocal,
+            onDone = {
+                showReadLocalDialog = false
+            },
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -105,7 +115,7 @@ fun MoreCatNav(
 
                 actions = {
                     IconButton(onClick = {
-                        showSettingsDialog = true
+                        showReadLocalDialog = true
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Settings,
@@ -146,6 +156,7 @@ fun MoreCatNav(
                     FactsScreen(
                         modifier = Modifier.fillMaxSize(),
                         factsUiState = factsUiState,
+                        refresh = refresh
                     )
                     Log.i("factsUiState","$factsUiState")
                 }

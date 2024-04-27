@@ -13,12 +13,14 @@ class MoreCatApp : Application() {
 
         private lateinit var instance: MoreCatApp
 
-        lateinit var factsSample: FactsResponse
-        lateinit var imagesSample: List<String>
+        var factsSample = FactsResponse(data = listOf("Read from Local"))
+        var imagesSample: List<String> = listOf("https://cdn.shibe.online/cats/f2f84ec007bea508baec72bbb70a47c335522c9a.jpg")
+        //lateinit var factsSample: FactsResponse
+        //lateinit var imagesSample: List<String>
     }
 
     override fun onCreate() {
-        Log.i("factsSample","$factsSample")
+
         instance = this
         super.onCreate()
 

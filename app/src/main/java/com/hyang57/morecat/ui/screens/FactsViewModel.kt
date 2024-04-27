@@ -35,19 +35,21 @@ class FactsViewModel(private val factsRepo: FactsRepository,
             var facts = FactsResponse(data = listOf("test"))
             var images: List<String> = listOf("https://cdn.shibe.online/cats/f2f84ec007bea508baec72bbb70a47c335522c9a.jpg")
             factsRepo.fetchData(onFailure = {
-                // Todo: add error handling
-                Log.i("facts api fail","facts api fail")
+                facts = MoreCatApp.factsSample
+                updateState(facts, images)
+                Log.w("Fetched facts failure","Fetched facts failure")
             }) { factsResponse ->
                 facts = factsResponse
-                Log.i("facts api success","$facts")
+                Log.i("Fetched facts success","$facts")
             }
             imagesRepo.fetchData(onFailure = {
-                // Todo: add error handling
-                Log.i("images api fail","images api fail")
+                images = MoreCatApp.imagesSample
+                updateState(facts, images)
+                Log.w("Fetched images failure","Fetched images failure")
             }) { imagesList ->
                 images = imagesList
                 updateState(facts, images)
-                Log.i("images api success","$images")
+                Log.i("Fetched images success","$images")
             }
         }
     }
