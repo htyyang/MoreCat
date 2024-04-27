@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.hyang57.morecat.facts.FactsRepository
+import com.hyang57.morecat.images.ImagesRepository
 import com.hyang57.morecat.ui.theme.MoreCatTheme
 
 class MainActivity : ComponentActivity() {
@@ -49,6 +50,17 @@ fun GreetingPreview() {
             println("Fetched data successfully")
             response.data.forEach { fact ->
                 println(fact)
+            }
+        }
+    )
+    val repository2 = ImagesRepository()
+
+    repository2.fetchData(
+        onFailure = { println("Failed to fetch images") },
+        onSuccess = { urls ->
+            println("Fetched images successfully")
+            urls.forEach { url ->
+                println(url)
             }
         }
     )

@@ -22,6 +22,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,7 +31,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hyang57.morecat.facts.FactsRepository
+import com.hyang57.morecat.images.ImagesRepository
 import com.hyang57.morecat.ui.screens.FactsScreen
+import com.hyang57.morecat.ui.screens.FactsViewModel
 import com.hyang57.morecat.ui.screens.InfoScreen
 
 object Route {
@@ -70,13 +75,13 @@ val DESTINATIONS = listOf(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MoreCatNav(
-    //todayViewModel: TodayViewModel,
-    readFromFile: MutableState<Boolean>,
+    factsViewModel: FactsViewModel,
+    readLocal: MutableState<Boolean>,
     refresh: () -> Unit,
 ) {
     val destination = remember { mutableStateOf(Route.FACTS) }
     var showSettingsDialog by remember { mutableStateOf(false) }
-    //val todayUiState by todayViewModel.uiState.collectAsState()
+    val factsUiState by factsViewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -138,6 +143,7 @@ fun MoreCatNav(
                 Route.FACTS -> {
                     FactsScreen(
                         modifier = Modifier.fillMaxSize(),
+                        factsUiState = factsUiState,
                     )
                 }
                 Route.INFO -> {
@@ -155,8 +161,10 @@ fun MoreCatNav(
 fun MoreCatPreview() {
     MaterialTheme {
         val readFromFile = remember { mutableStateOf(false) }  // Mock state for the preview
+
         MoreCatNav(
-            readFromFile = readFromFile,
+            readLocal = readFromFile,
+            factsViewModel = FactsViewModel(FactsRepository(), ImagesRepository()),
             refresh = {}
         )
     }
