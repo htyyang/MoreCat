@@ -34,7 +34,6 @@ class MainActivity : ComponentActivity() {
     private val viewModelFactory = FactsViewModelFactory(factsRepository, imagesRepository)
     private val factsViewModel: FactsViewModel by viewModels { viewModelFactory }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

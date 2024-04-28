@@ -20,6 +20,20 @@ val authorProperties: Properties by lazy {
     }
 }
 
+val languageProperties: Properties by lazy {
+    Properties().apply {
+        val propertiesFile = rootProject.file("language.properties")
+        propertiesFile.inputStream().use { load(it) }
+    }
+}
+
+val institutionProperties: Properties by lazy {
+    Properties().apply {
+        val propertiesFile = rootProject.file("institution.properties")
+        propertiesFile.inputStream().use { load(it) }
+    }
+}
+
 
 android {
     namespace = "com.hyang57.morecat"
@@ -36,6 +50,8 @@ android {
 
         buildConfigField("String", "api_key", "${keyProperties["api_key"]}")
         buildConfigField("String", "author", "${authorProperties["author"]}")
+        buildConfigField("String", "language", "${languageProperties["language"]}")
+        buildConfigField("String", "institution", "${institutionProperties["institution"]}")
 
         vectorDrawables {
             useSupportLibrary = true

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,6 +36,7 @@ import com.hyang57.morecat.facts.FactsRepository
 import com.hyang57.morecat.images.ImagesRepository
 import com.hyang57.morecat.ui.parts.OptionsDialog
 import com.hyang57.morecat.ui.screens.FactsScreen
+import com.hyang57.morecat.ui.screens.InfoScreen
 import com.hyang57.morecat.ui.viewModels.FactsViewModel
 import com.hyang57.morecat.ui.screens.MemeScreen
 import com.hyang57.morecat.ui.viewModels.MemeViewModel
@@ -44,6 +46,7 @@ object Route {
     const val FACTS = "Facts"
     const val MEME = "Meme"
     const val SETTINGS = "Settings"
+    const val INFO = "Info"
 }
 
 data class Destination(
@@ -71,6 +74,12 @@ val DESTINATIONS = listOf(
         selectedIcon = Icons.Default.Settings,
         unselectedIcon = Icons.Default.Settings,
         textId = R.string.title_settings
+    ),
+    Destination(
+        route = Route.INFO,
+        selectedIcon = Icons.Default.Info,
+        unselectedIcon = Icons.Default.Info,
+        textId = R.string.title_info
     )
 )
 
@@ -189,6 +198,12 @@ fun MoreCatNav(
                         memeUiState = memeUiState,
                         changeMemeColor = {memeViewModel.updateColor(it)},
                         updateCount = {factsViewModel.updateCount(it)}
+                    )
+                }
+
+                Route.INFO -> {
+                    InfoScreen(
+                        modifier = Modifier.fillMaxSize(),
                     )
                 }
             }

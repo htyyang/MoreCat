@@ -3,6 +3,7 @@
     <string name="title_facts">Facts</string>
     <string name="title_meme">Meme</string>
     <string name="title_settings">Settings</string>
+    <string name="title_info">Info</string>
     <string name="read_local">Load Data Locally</string>
     <string name="refresh">Refresh</string>
     <string name="done">Done</string>
@@ -10,4 +11,5 @@
     <string name="mono_meme">Mono Meme</string>
     <string name="square_meme">Square Meme</string>
     <string name="fenwick_font">Fenwick Font</string>
+    <string name="copyright">Copyright © 2024 Haotian Yang. All rights reserved.</string>
 </resources>

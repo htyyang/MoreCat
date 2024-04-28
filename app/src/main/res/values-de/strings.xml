@@ -3,6 +3,7 @@
     <string name="title_facts">Fakten</string>
     <string name="title_meme">Meme</string>
     <string name="title_settings">Einstellungen</string>
+    <string name="title_info">Info</string>
     <string name="read_local">Daten lokal laden</string>
     <string name="refresh">Aktualisieren</string>
     <string name="done">Fertig</string>
@@ -10,4 +11,5 @@
     <string name="mono_meme">Mono Meme</string>
     <string name="square_meme">Quadratisches Meme</string>
     <string name="fenwick_font">Fenwick Schriftart</string>
+    <string name="copyright">Urheberrecht © 2024 Haotian Yang. Alle Rechte vorbehalten.</string>
 </resources>
