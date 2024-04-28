@@ -34,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.hyang57.morecat.facts.FactsRepository
 import com.hyang57.morecat.images.ImagesRepository
+import com.hyang57.morecat.tags.TagsRepository
 import com.hyang57.morecat.ui.parts.OptionsDialog
 import com.hyang57.morecat.ui.screens.FactsScreen
 import com.hyang57.morecat.ui.screens.InfoScreen
@@ -41,6 +42,7 @@ import com.hyang57.morecat.ui.viewModels.FactsViewModel
 import com.hyang57.morecat.ui.screens.MemeScreen
 import com.hyang57.morecat.ui.viewModels.MemeViewModel
 import com.hyang57.morecat.ui.screens.SettingsScreen
+import com.hyang57.morecat.ui.viewModels.TagsViewModel
 
 object Route {
     const val FACTS = "Facts"
@@ -88,6 +90,7 @@ val DESTINATIONS = listOf(
 fun MoreCatNav(
     factsViewModel: FactsViewModel,
     memeViewModel: MemeViewModel,
+    tagsViewModel: TagsViewModel,
     readLocal: MutableState<Boolean>,
     monoMeme: MutableState<Boolean>,
     squareMeme: MutableState<Boolean>,
@@ -99,6 +102,7 @@ fun MoreCatNav(
 
     val factsUiState by factsViewModel.uiState.collectAsState()
     val memeUiState by memeViewModel.uiState.collectAsState()
+    val tagsUiState by tagsViewModel.uiState.collectAsState()
 
     if (showOptionsDialog) {
         OptionsDialog(
@@ -126,6 +130,7 @@ fun MoreCatNav(
                             Route.FACTS -> stringResource(id = R.string.title_facts)
                             Route.MEME -> stringResource(id = R.string.title_meme)
                             Route.SETTINGS -> stringResource(id = R.string.title_settings)
+                            Route.INFO -> stringResource(id = R.string.title_info)
                             else -> ""
                         })
                 },
@@ -204,6 +209,7 @@ fun MoreCatNav(
                 Route.INFO -> {
                     InfoScreen(
                         modifier = Modifier.fillMaxSize(),
+                        tagsUiState = tagsUiState
                     )
                 }
             }
@@ -215,7 +221,7 @@ fun MoreCatNav(
 @Composable
 fun MoreCatPreview() {
     MaterialTheme {
-        val readLocal = remember { mutableStateOf(false) }  // Mock state for the preview
+        val readLocal = remember { mutableStateOf(false) }
         val monoMeme = remember { mutableStateOf(false) }
         val squareMeme = remember { mutableStateOf(false) }
         val fenwickFont = remember { mutableStateOf(false) }
@@ -226,6 +232,7 @@ fun MoreCatPreview() {
             monoMeme = monoMeme,
             squareMeme = squareMeme,
             fenwickFont = fenwickFont,
+            tagsViewModel = TagsViewModel(TagsRepository()),
             refresh = {},
         )
     }

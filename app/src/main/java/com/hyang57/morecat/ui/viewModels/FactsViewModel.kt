@@ -7,11 +7,13 @@ import com.hyang57.morecat.MoreCatApp
 import com.hyang57.morecat.facts.FactsRepository
 import com.hyang57.morecat.facts.FactsResponse
 import com.hyang57.morecat.images.ImagesRepository
+import com.hyang57.morecat.tags.TagsRepository
+import com.hyang57.morecat.tags.TagsResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class FactsViewModel(private val factsRepo: FactsRepository,
-                     private val imagesRepo: ImagesRepository
+                     private val imagesRepo: ImagesRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(FactsUiState())

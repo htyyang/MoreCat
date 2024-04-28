@@ -5,9 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -26,13 +31,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.hyang57.morecat.BuildConfig
 import com.hyang57.morecat.R
 import com.hyang57.morecat.ui.theme.MoreCatTheme
+import com.hyang57.morecat.ui.viewModels.FactsUiState
+import com.hyang57.morecat.ui.viewModels.MemeUiState
+import com.hyang57.morecat.ui.viewModels.TagsUiState
+import java.io.File.separator
 
 @Composable
 fun InfoScreen(
     modifier: Modifier = Modifier,
+    tagsUiState: TagsUiState,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -43,8 +55,8 @@ fun InfoScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .weight(8f)
-                .padding(vertical = 100.dp)
+                .weight(6f)
+                .padding(vertical = 30.dp)
         ) {
             Image(
                 painterResource(id = R.mipmap.ic_launcher_foreground),
@@ -95,10 +107,48 @@ fun InfoScreen(
                         fontSize = 20.sp
                     )
                 )
+
             }
+        }
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .weight(2f)
+
+        ){
+            // Lucky Cat
+            // Coil
+
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data("https://cataas.com/cat/" + tagsUiState.id)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = "lucky cat",
+                modifier = Modifier.fillMaxHeight(),
+
+            )
+
         }
         Row(
             modifier = Modifier
+                .weight(1.3f)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(id = R.string.lucky) + " " + tagsUiState.tags.joinToString(separator = ", "),
+                style = TextStyle(
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.tertiary,
+                )
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .weight(0.5f)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
@@ -115,7 +165,7 @@ fun InfoScreen(
         }
         Row(
             modifier = Modifier
-                .weight(1f)
+                .weight(0.5f)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
@@ -131,7 +181,11 @@ fun InfoScreen(
             )
         }
         Row(
-            Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+
         ) {
             Text(
                 text = stringResource(id = R.string.copyright),
@@ -146,10 +200,11 @@ fun InfoScreen(
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun InfoScreenPreview() {
     MoreCatTheme {
-        InfoScreen()
+        InfoScreen(tagsUiState = TagsUiState(tags = listOf("highway_hoop","upii"), id = "fewECg3UpBnPjxNr"))
     }
 }

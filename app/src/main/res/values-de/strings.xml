@@ -11,5 +11,6 @@
     <string name="mono_meme">Mono Meme</string>
     <string name="square_meme">Quadratisches Meme</string>
     <string name="fenwick_font">Fenwick Schriftart</string>
+    <string name="lucky">Glück heute:</string>
     <string name="copyright">Urheberrecht © 2024 Haotian Yang. Alle Rechte vorbehalten.</string>
 </resources>

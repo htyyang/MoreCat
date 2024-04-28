@@ -17,8 +17,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.hyang57.morecat.facts.FactsRepository
 import com.hyang57.morecat.images.ImagesRepository
+import com.hyang57.morecat.tags.TagsRepository
 import com.hyang57.morecat.ui.viewModels.FactsViewModel
 import com.hyang57.morecat.ui.viewModels.MemeViewModel
+import com.hyang57.morecat.ui.viewModels.TagsViewModel
 import com.hyang57.morecat.ui.theme.MoreCatTheme
 
 class FactsViewModelFactory(private val factsRepository: FactsRepository, private val imagesRepository: ImagesRepository ) : ViewModelProvider.Factory {
@@ -26,13 +28,21 @@ class FactsViewModelFactory(private val factsRepository: FactsRepository, privat
         return FactsViewModel(factsRepo = factsRepository, imagesRepo = imagesRepository) as T
     }
 }
+class TagsViewModelFactory(private val tagsRepository: TagsRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return TagsViewModel(tagsRepository) as T
+    }
+}
 class MainActivity : ComponentActivity() {
 
     private val factsRepository = FactsRepository()
     private val imagesRepository = ImagesRepository()
+    private val tagsRepository = TagsRepository()
 
     private val viewModelFactory = FactsViewModelFactory(factsRepository, imagesRepository)
+    private val tagsViewModelFactory = TagsViewModelFactory(tagsRepository = tagsRepository)
     private val factsViewModel: FactsViewModel by viewModels { viewModelFactory }
+    private val tagsViewModel: TagsViewModel by viewModels { tagsViewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +54,7 @@ class MainActivity : ComponentActivity() {
             val squareMeme = remember { mutableStateOf(false) }
             val fenwickFont = remember { mutableStateOf(false) }
             factsViewModel.fetchData(fromLocal = readLocal.value)
+            tagsViewModel.fetchData(fromLocal = readLocal.value)
 
             MoreCatTheme {
 
@@ -54,6 +65,7 @@ class MainActivity : ComponentActivity() {
                     MoreCatNav(
                         factsViewModel = factsViewModel,
                         memeViewModel = MemeViewModel(),
+                        tagsViewModel = tagsViewModel,
                         readLocal = readLocal,
                         squareMeme = squareMeme,
                         monoMeme = monoMeme,
@@ -99,6 +111,21 @@ fun GreetingPreview() {
             println("Fetched images successfully")
             urls.forEach { url ->
                 println(url)
+            }
+        }
+    )
+
+    val repository3 = TagsRepository()
+
+    repository3.fetchData(
+        onFailure = { println("Failed to fetch tags") },
+        onSuccess = { response ->
+            println("Fetched tags successfully")
+            response.tags.forEach { tag ->
+                println(tag)
+            }
+            response._id.forEach { id ->
+                println(id)
             }
         }
     )
