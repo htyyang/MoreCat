@@ -17,8 +17,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.hyang57.morecat.facts.FactsRepository
 import com.hyang57.morecat.images.ImagesRepository
-import com.hyang57.morecat.ui.screens.FactsViewModel
-import com.hyang57.morecat.ui.screens.MemeViewModel
+import com.hyang57.morecat.ui.viewModels.FactsViewModel
+import com.hyang57.morecat.ui.viewModels.MemeViewModel
 import com.hyang57.morecat.ui.theme.MoreCatTheme
 
 class FactsViewModelFactory(private val factsRepository: FactsRepository, private val imagesRepository: ImagesRepository ) : ViewModelProvider.Factory {
@@ -41,7 +41,9 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val readLocal = remember { mutableStateOf(false) }
-            val isDarkMode = remember { mutableStateOf(false) }
+            val monoMeme = remember { mutableStateOf(false) }
+            val squareMeme = remember { mutableStateOf(false) }
+            val fenwickFont = remember { mutableStateOf(false) }
             factsViewModel.fetchData(fromLocal = readLocal.value)
 
             MoreCatTheme {
@@ -54,6 +56,9 @@ class MainActivity : ComponentActivity() {
                         factsViewModel = factsViewModel,
                         memeViewModel = MemeViewModel(),
                         readLocal = readLocal,
+                        squareMeme = squareMeme,
+                        monoMeme = monoMeme,
+                        fenwickFont = fenwickFont
                     ) {
                         factsViewModel.fetchData(readLocal.value)
                     }

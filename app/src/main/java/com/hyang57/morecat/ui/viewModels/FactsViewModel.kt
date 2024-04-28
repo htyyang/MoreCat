@@ -1,10 +1,9 @@
-package com.hyang57.morecat.ui.screens
+package com.hyang57.morecat.ui.viewModels
 
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.hyang57.morecat.MoreCatApp
-
 import com.hyang57.morecat.facts.FactsRepository
 import com.hyang57.morecat.facts.FactsResponse
 import com.hyang57.morecat.images.ImagesRepository
@@ -32,6 +31,7 @@ class FactsViewModel(private val factsRepo: FactsRepository,
         )
     }
 
+    // Fetch facts and images
     fun fetchData(fromLocal: Boolean) {
         if (fromLocal) {
             val factsSample = MoreCatApp.factsSample
@@ -54,12 +54,14 @@ class FactsViewModel(private val factsRepo: FactsRepository,
                 Log.w("Fetched images failure","Fetched images failure")
             }) { imagesList ->
                 images = imagesList
+                // Sleep to make sure facts and images are successfully fetched
+                Thread.sleep(300)
+                // Only update while fetching images after fetching facts. Because sync problem sometimes occurs.
                 updateState(facts, images)
                 Log.i("Fetched images success","$images")
             }
         }
     }
-
 }
 
 data class FactsUiState(

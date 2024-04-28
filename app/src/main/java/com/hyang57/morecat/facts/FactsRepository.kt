@@ -27,6 +27,8 @@ class FactsRepository {
 
         request.enqueue(object : Callback<FactsResponse> {
             override fun onFailure(call: Call<FactsResponse>, t: Throwable) {
+                println("Failed to fetch facts due to an error: ${t.message}")
+                t.printStackTrace()
                 onFailure()
             }
 

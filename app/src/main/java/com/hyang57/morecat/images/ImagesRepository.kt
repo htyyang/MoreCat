@@ -1,6 +1,5 @@
 package com.hyang57.morecat.images
 
-
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,7 +28,7 @@ class ImagesRepository {
         request.enqueue(object : Callback<List<String>> {
             override fun onFailure(call: Call<List<String>>, t: Throwable) {
                 println("Failed to fetch images due to an error: ${t.message}")
-                t.printStackTrace()  // Print the full stack trace to understand the exception
+                t.printStackTrace()
                 onFailure()
             }
 

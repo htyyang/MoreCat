@@ -13,6 +13,13 @@ val keyProperties: Properties by lazy {
     }
 }
 
+val authorProperties: Properties by lazy {
+    Properties().apply {
+        val propertiesFile = rootProject.file("author.properties")
+        propertiesFile.inputStream().use { load(it) }
+    }
+}
+
 
 android {
     namespace = "com.hyang57.morecat"
@@ -23,12 +30,12 @@ android {
         minSdk = 27
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "api_key", "${keyProperties["api_key"]}")
-
+        buildConfigField("String", "author", "${authorProperties["author"]}")
 
         vectorDrawables {
             useSupportLibrary = true

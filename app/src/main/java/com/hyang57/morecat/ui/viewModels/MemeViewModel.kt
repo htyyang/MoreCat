@@ -1,4 +1,4 @@
-package com.hyang57.morecat.ui.screens
+package com.hyang57.morecat.ui.viewModels
 
 import androidx.lifecycle.ViewModel
 import com.hyang57.morecat.MoreCatApp

@@ -1,4 +1,4 @@
-package com.hyang57.morecat.ui
+package com.hyang57.morecat.ui.parts
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.hyang57.morecat.R
 import com.hyang57.morecat.ui.theme.MoreCatTheme
 
+// Change meme's word
 @Composable
 fun TextBar(
     text: String,
@@ -47,7 +48,6 @@ fun TextBar(
         }
     }
 }
-
 
 @Preview
 @Composable

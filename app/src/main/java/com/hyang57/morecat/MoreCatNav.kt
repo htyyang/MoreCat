@@ -6,10 +6,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,15 +31,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.hyang57.morecat.MoreCatApp.Companion.factsSample
 import com.hyang57.morecat.facts.FactsRepository
 import com.hyang57.morecat.images.ImagesRepository
-import com.hyang57.morecat.ui.ReadLocalDialog
+import com.hyang57.morecat.ui.parts.OptionsDialog
 import com.hyang57.morecat.ui.screens.FactsScreen
-import com.hyang57.morecat.ui.screens.FactsViewModel
+import com.hyang57.morecat.ui.viewModels.FactsViewModel
 import com.hyang57.morecat.ui.screens.MemeScreen
-import com.hyang57.morecat.ui.screens.MemeViewModel
+import com.hyang57.morecat.ui.viewModels.MemeViewModel
 import com.hyang57.morecat.ui.screens.SettingsScreen
 
 object Route {
@@ -84,19 +80,25 @@ fun MoreCatNav(
     factsViewModel: FactsViewModel,
     memeViewModel: MemeViewModel,
     readLocal: MutableState<Boolean>,
+    monoMeme: MutableState<Boolean>,
+    squareMeme: MutableState<Boolean>,
+    fenwickFont: MutableState<Boolean>,
     refresh: () -> Unit,
 ) {
     val destination = remember { mutableStateOf(Route.FACTS) }
-    var showReadLocalDialog by remember { mutableStateOf(false) }
+    var showOptionsDialog by remember { mutableStateOf(false) }
 
     val factsUiState by factsViewModel.uiState.collectAsState()
     val memeUiState by memeViewModel.uiState.collectAsState()
 
-    if (showReadLocalDialog) {
-        ReadLocalDialog(
+    if (showOptionsDialog) {
+        OptionsDialog(
             readLocal = readLocal,
+            monoMeme = monoMeme,
+            squareMeme = squareMeme,
+            fenwickFont = fenwickFont,
             onDone = {
-                showReadLocalDialog = false
+                showOptionsDialog = false
             },
         )
     }
@@ -121,7 +123,7 @@ fun MoreCatNav(
 
                 actions = {
                     IconButton(onClick = {
-                        showReadLocalDialog = true
+                        showOptionsDialog = true
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Build,
@@ -162,6 +164,7 @@ fun MoreCatNav(
                     FactsScreen(
                         modifier = Modifier.fillMaxSize(),
                         factsUiState = factsUiState,
+                        fenwickFont = fenwickFont.value,
                         refresh = refresh
                     )
                     Log.i("factsUiState","$factsUiState")
@@ -171,6 +174,8 @@ fun MoreCatNav(
                     MemeScreen(
                         modifier = Modifier.fillMaxSize(),
                         memeUiState = memeUiState,
+                        monoMeme = monoMeme.value,
+                        squareMeme = squareMeme.value,
                         onText = {
                             memeViewModel.fetchMeme(it)
                         },
@@ -196,11 +201,16 @@ fun MoreCatNav(
 fun MoreCatPreview() {
     MaterialTheme {
         val readLocal = remember { mutableStateOf(false) }  // Mock state for the preview
-
+        val monoMeme = remember { mutableStateOf(false) }
+        val squareMeme = remember { mutableStateOf(false) }
+        val fenwickFont = remember { mutableStateOf(false) }
         MoreCatNav(
             readLocal = readLocal,
             factsViewModel = FactsViewModel(FactsRepository(), ImagesRepository()),
             memeViewModel = MemeViewModel(),
+            monoMeme = monoMeme,
+            squareMeme = squareMeme,
+            fenwickFont = fenwickFont,
             refresh = {},
         )
     }
